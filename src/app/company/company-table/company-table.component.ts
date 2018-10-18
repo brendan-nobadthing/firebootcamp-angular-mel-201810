@@ -18,7 +18,6 @@ export class CompanyTableComponent implements OnInit {
   @Output()
   companyDeleteClicked = new EventEmitter<Company>();
 
-
   ngOnInit() {
   }
 
