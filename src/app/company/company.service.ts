@@ -20,6 +20,10 @@ export class CompanyService {
     );
   }
 
+  deleteCompany(id: number): Observable<Company>{
+    return this.httpClient.delete<Company>(`${this.API_BASE}/company/${id}`)
+  }
+
   myErrorHandler(err): Observable<Company[]> {
     console.error('service error', err);
     return new Observable<Company[]>();
