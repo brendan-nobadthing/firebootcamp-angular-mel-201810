@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Company } from '../company';
 import { CompanyService } from '../company.service';
-import { tap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'fbc-company-list',
@@ -10,16 +10,12 @@ import { tap } from 'rxjs/operators';
 })
 export class CompanyListComponent implements OnInit {
 
-  companies: Company[];
+  companies$: Observable<Company[]>;
 
   constructor(private companyService: CompanyService) {
   }
 
   ngOnInit() {
-    this.companyService.getCompanies()
-      .subscribe(
-        next =>  this.companies = next,
-        err => console.error('component error', err)
-      );
+    this.companies$ = this.companyService.getCompanies();
   }
 }

@@ -9,7 +9,7 @@ import { catchError } from 'rxjs/operators';
 })
 export class CompanyService {
 
-  API_BASE = 'http://xxfirebootcamp-crm-api.azurewebsites.net/api';
+  API_BASE = 'http://firebootcamp-crm-api.azurewebsites.net/api';
 
   constructor(private httpClient: HttpClient) { }
 
@@ -22,7 +22,6 @@ export class CompanyService {
 
   myErrorHandler(err): Observable<Company[]> {
     console.error('service error', err);
-    throw err;
     return new Observable<Company[]>();
   }
 }
