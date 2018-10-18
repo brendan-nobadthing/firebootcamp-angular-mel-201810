@@ -6,7 +6,10 @@
 </h1>
 
 <div>
- <fbc-company-table [companies]="companies$ | async"></fbc-company-table>
+ <fbc-company-table
+ [companies]="companies$ | async"
+ (companyDeleteClicked)="deleteCompany($event)"
+ ></fbc-company-table>
 </div>
 
 
