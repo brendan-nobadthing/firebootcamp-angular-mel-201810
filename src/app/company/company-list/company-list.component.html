@@ -6,27 +6,7 @@
 </h1>
 
 <div>
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Email</th>
-        <th>Phone</th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr  *ngFor="let company of companies$ | async">
-        <td>{{company.name}}</td>
-        <td>{{company.email}}</td>
-        <td>{{company.phone}}</td>
-        <td class="company-row">
-          <button class="btn btn-info">Edit</button>
-          <button class="btn btn-danger">Delete</button>
-       </td>
-      </tr>
-    </tbody>
-  </table>
+ <fbc-company-table [companies]="companies$ | async"></fbc-company-table>
 </div>
 
 
