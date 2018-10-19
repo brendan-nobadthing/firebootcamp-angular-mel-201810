@@ -35,7 +35,21 @@ export class CompanyService {
         .set('content-type', 'application/json')
       }
     )
-    .pipe(this.myErrorHandler)
+    .pipe(catchError(this.myErrorHandler))
+  }
+
+  getCompany(id: number): Observable<Company>{
+    return this.httpClient.get<Company>(`${this.API_BASE}/company/${id}`);
+  }
+
+  updateCompany(company: Company): Observable<Company>{
+    return this.httpClient.put<Company>(`${this.API_BASE}/company/${company.id}`,
+      company,
+      {
+        headers: new HttpHeaders()
+        .set('content-type', 'application/json')
+      }
+    )
   }
 
   myErrorHandler(err): Observable<any> {
