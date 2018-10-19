@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Company } from './company';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 @Injectable({
@@ -11,24 +11,35 @@ export class CompanyService {
 
   API_BASE = 'http://firebootcamp-crm-api.azurewebsites.net/api';
 
-  constructor(private httpClient: HttpClient) { }
+  companies$ = new BehaviorSubject<Company[]>([]);
 
-  getCompanies(): Observable<Company[]> {
-    return this.httpClient
+ constructor(private httpClient: HttpClient) {
+    this.loadCompanies();
+  }
+
+  loadCompanies() {
+    this.httpClient
     .get<Company[]>(`${this.API_BASE}/company`)
     .pipe(
       catchError(this.myErrorHandler)
-    );
+    ).subscribe(c => {
+      this.companies$.next(c);
+    });
   }
 
-  deleteCompany(id: number): Observable<Company>{
-    return this.httpClient
-    .delete<Company>(`${this.API_BASE}/company/${id}`)
+  getCompanies(): Observable<Company[]> {
+    return this.companies$;
+  }
+
+  deleteCompany(id: number) {
+    this.httpClient
+      .delete<Company>(`${this.API_BASE}/company/${id}`)
+      .subscribe(c => this.loadCompanies());
   }
 
 
-  addCompany(company: Company): Observable<Company>{
-    return this.httpClient
+  addCompany(company: Company) {
+   this.httpClient
     .post<Company>(`${this.API_BASE}/company`, company,
       {
         headers: new HttpHeaders()
@@ -36,20 +47,24 @@ export class CompanyService {
       }
     )
     .pipe(catchError(this.myErrorHandler))
+    .subscribe(c => this.loadCompanies());
   }
 
-  getCompany(id: number): Observable<Company>{
-    return this.httpClient.get<Company>(`${this.API_BASE}/company/${id}`);
-  }
 
-  updateCompany(company: Company): Observable<Company>{
-    return this.httpClient.put<Company>(`${this.API_BASE}/company/${company.id}`,
+
+  updateCompany(company: Company) {
+    this.httpClient.put<Company>(`${this.API_BASE}/company/${company.id}`,
       company,
       {
         headers: new HttpHeaders()
         .set('content-type', 'application/json')
       }
-    )
+    ).subscribe(c => this.loadCompanies());
+
+  }
+
+  getCompany(id: number): Observable<Company> {
+    return this.httpClient.get<Company>(`${this.API_BASE}/company/${id}`);
   }
 
   myErrorHandler(err): Observable<any> {

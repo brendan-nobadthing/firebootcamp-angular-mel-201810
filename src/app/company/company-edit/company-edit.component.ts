@@ -25,7 +25,8 @@ export class CompanyEditComponent implements OnInit {
 
   ngOnInit() {
     this.companyId
-      = parseInt(this.activatedRoute.snapshot.params['id'])
+      // tslint:disable-next-line:radix
+      = parseInt(this.activatedRoute.snapshot.params['id']);
     this.isNewCompany = this.companyId === 0;
 
     this.buildForm();
@@ -34,7 +35,7 @@ export class CompanyEditComponent implements OnInit {
       this.companyService.getCompany(this.companyId)
         .subscribe(company => {
           this.companyForm.patchValue(company);
-        })
+        });
     }
   }
 
@@ -48,24 +49,19 @@ export class CompanyEditComponent implements OnInit {
       }
 
       // No type safety :(
-    )
+    );
   }
 
   saveCompany() {
     if (this.isNewCompany) {
-      this.companyService
-        .addCompany(this.companyForm.value)
-        .subscribe(c => {
-          this.router.navigateByUrl('/company/list')
-        })
+      this.companyService.addCompany(this.companyForm.value)
     } else {
       // This builds a new Company object with "Spread" operator (...)
-      var currentCompany: Company = {...this.companyForm.value, id: this.companyId}
-      this.companyService.updateCompany(currentCompany)
-      .subscribe(c =>{
-        this.router.navigateByUrl('/company/list')
-      })
+      const currentCompany: Company = {...this.companyForm.value, id: this.companyId}
+      this.companyService.updateCompany(currentCompany);
     }
+    this.router.navigateByUrl('/company/list');
   }
 
 }
+

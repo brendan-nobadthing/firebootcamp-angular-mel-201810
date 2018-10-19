@@ -19,14 +19,11 @@ export class CompanyListComponent implements OnInit {
     this.loadCompanies();
   }
 
-  loadCompanies(){
+  loadCompanies() {
     this.companies$ = this.companyService.getCompanies();
   }
 
   deleteCompany(company: Company) {
-    this.companyService.deleteCompany(company.id)
-    .subscribe(c => {
-        this.loadCompanies();
-    });
+    this.companyService.deleteCompany(company.id);
   }
 }
